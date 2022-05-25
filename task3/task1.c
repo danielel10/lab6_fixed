@@ -20,6 +20,7 @@ int *rightPipe(int **pipes, cmdLine *pCmdLine);
 int main() {
 
     char termination [] = "quit";
+    char *last_command = NULL;
     int status;
     int pipe_number;
     int ** pipes;
@@ -43,7 +44,10 @@ int main() {
             break;
         }
 
-
+        if(strcmp(line,"prtrls") != 0) {
+            last_command = malloc(sizeof(line));
+            strcpy(last_command, line);
+        }
         cmdLine* parsed_line;
         parsed_line = parseCmdLines(line);
 
@@ -53,6 +57,12 @@ int main() {
             if(value < 0)
                 perror("Error:");
 
+            continue;
+        }
+        else if (strcmp((parsed_line->arguments[0]), "prtrls") == 0)
+        {
+            printf("%s\n", last_command);
+            freeCmdLines(parsed_line);
             continue;
         }
         else {
